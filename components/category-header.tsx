@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import type { Folder } from "@/types";
 import { Menu } from "lucide-react";
-import { getIconForFolder } from "./folder-sidebar";
+import { getIconForFolder } from "@/lib/folder-icons";
 
 interface CategoryHeaderProps {
   folders: Folder[];

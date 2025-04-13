@@ -1,17 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FolderSidebar } from "@/components/folder-sidebar";
-import { NotesGrid } from "@/components/notes-grid";
-import { NoteEditor } from "@/components/note-editor";
-import { SearchBar } from "@/components/search-bar";
-import { CreateNoteButton } from "@/components/create-note-button";
 import { CategoryHeader } from "@/components/category-header";
-import { useNotes } from "@/hooks/use-notes";
+import { CreateNoteButton } from "@/components/create-note-button";
+import { FolderSidebar } from "@/components/folder-sidebar";
+import { NoteEditor } from "@/components/note-editor";
+import { NotesGrid } from "@/components/notes-grid";
+import { SearchBar } from "@/components/search-bar";
 import { useFolders } from "@/hooks/use-folders";
+import { useNotes } from "@/hooks/use-notes";
 import { useSearch } from "@/hooks/use-search";
 import type { Note } from "@/types";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function NotesApp() {
   const { folders, activeFolder, setActiveFolder, addFolder } = useFolders();

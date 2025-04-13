@@ -13,8 +13,8 @@ export function NotesGrid({ notes, folders, onNoteClick }: NotesGridProps) {
   if (notes.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-zinc-400">
-        <p className="text-3xl title-font">No notes found</p>
-        <p className="text-sm">Create a new note to get started</p>
+        <p className="text-4xl title-font">No notes found</p>
+        <p>Create a new note to get started</p>
       </div>
     );
   }

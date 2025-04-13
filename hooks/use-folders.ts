@@ -6,7 +6,7 @@ import type { Folder } from "@/types"
 export const ALL_NOTES_ID = "all"
 
 const initialFolders: Folder[] = [
-  { id: ALL_NOTES_ID, name: "All", color: "#a8a8a8" },
+  { id: ALL_NOTES_ID, name: "All", color: "#828282" },
   { id: "work", name: "Work", color: "#6f00ff" },
   { id: "personal", name: "Personal", color: "#00bbff" },
   { id: "ideas", name: "Ideas", color: "#fce303" },
