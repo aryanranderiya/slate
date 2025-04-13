@@ -10,7 +10,7 @@ interface SearchBarProps {
 
 export function SearchBar({ value, onChange }: SearchBarProps) {
   return (
-    <div className="flex items-center gap-2 pt-2 w-full">
+    <div className="flex items-center gap-2 pt-2 w-full relative z-[1]">
       <Input
         id="search-input"
         type="text"

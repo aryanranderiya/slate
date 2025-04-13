@@ -41,7 +41,7 @@ export function NoteCard({ note, folders, onClick }: NoteCardProps) {
           "--shadow-color": shadowColor,
         } as React.CSSProperties
       }
-      className="rounded-2xl p-4 aspect-square shadow-none hover:scale-[1.05] transition-all duration-200 cursor-pointer flex flex-col h-full justify-between overflow-hidden"
+      className="rounded-2xl p-4 aspect-square shadow-none hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col h-full justify-between overflow-hidden"
     >
       <div className="flex flex-col items-start">
         <div
@@ -63,8 +63,8 @@ export function NoteCard({ note, folders, onClick }: NoteCardProps) {
               {folders.find((f) => f.id === note.folderId)?.name || "No Folder"}
             </span>
           )}
-        </div>{" "}
-        <h3 className="font-semibold text-lg tracking-tighter line-clamp-1 mb-2 overflow-hidden text-ellipsis max-w-full">
+        </div>
+        <h3 className="text-3xl line-clamp-1 mb-2 overflow-hidden text-ellipsis title-font max-w-full">
           {note.title || "Untitled"}
         </h3>
         <p className="text-zinc-600 text-sm mb-3 line-clamp-3 sm:line-clamp-4 md:line-clamp-5 lg:line-clamp-6">

@@ -3,12 +3,10 @@
 import { useState } from "react"
 import type { Folder } from "@/types"
 
-// Special all notes ID
 export const ALL_NOTES_ID = "all"
 
-// Initial dummy folders
 const initialFolders: Folder[] = [
-  { id: ALL_NOTES_ID, name: "All Notes", color: "#a8a8a8" },
+  { id: ALL_NOTES_ID, name: "All", color: "#a8a8a8" },
   { id: "work", name: "Work", color: "#6f00ff" },
   { id: "personal", name: "Personal", color: "#00bbff" },
   { id: "ideas", name: "Ideas", color: "#fce303" },

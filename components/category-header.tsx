@@ -20,7 +20,7 @@ export function CategoryHeader({
 
   if (!activeFolder) return null;
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center relative z-[1] justify-between ">
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
@@ -31,8 +31,8 @@ export function CategoryHeader({
         >
           <Menu className="h-5 w-5" />
         </Button>
-        {getIconForFolder(activeFolder.name)}
-        <h1 className="text-2xl font-bold tracking-tighter">
+        {getIconForFolder(activeFolder.name, "w-7 h-7")}
+        <h1 className="text-4xl title-font tracking-tighter">
           {activeFolder.name}
         </h1>
       </div>

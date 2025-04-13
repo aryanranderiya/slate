@@ -11,6 +11,7 @@ import { useNotes } from "@/hooks/use-notes";
 import { useFolders } from "@/hooks/use-folders";
 import { useSearch } from "@/hooks/use-search";
 import type { Note } from "@/types";
+import Image from "next/image";
 
 export default function NotesApp() {
   const { folders, activeFolder, setActiveFolder, addFolder } = useFolders();
@@ -76,7 +77,7 @@ export default function NotesApp() {
   }, [isEditorOpen]);
 
   return (
-    <div className="flex h-screen bg-zinc-50 text-zinc-900 overflow-hidden">
+    <div className="flex h-screen bg-zinc-100 text-zinc-900 overflow-hidden">
       <FolderSidebar
         folders={folders}
         activeFolder={activeFolder}
@@ -87,10 +88,19 @@ export default function NotesApp() {
         }, {} as Record<string, number>)}
         isOpen={isMobileMenuOpen}
         setIsOpen={setIsMobileMenuOpen}
+        onAddNote={handleCreateNote}
       />
 
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        <header className="sticky top-0 z-10 sm:px-7 sm:pt-8 px-4 rounded-3xl py-3">
+        <header className="sticky top-0 z-10 sm:px-7 sm:pt-8 px-4 rounded-b-3xl py-3 border-b-2 pb-7 bg-white border-t-0 flex flex-col items-start justify-center overflow-hidden">
+          {/*  min-h-[180px] */}
+          {/* <Image
+            src="/image.png"
+            fill={true}
+            alt="Banner"
+            className="z-0 inset-0 top-0 w-full h-full overflow-hidden object-cover object-center m-4 rounded-3xl opacity-25 blur-sm"
+          /> */}
+
           <CategoryHeader
             folders={folders}
             activeFolderId={activeFolder}

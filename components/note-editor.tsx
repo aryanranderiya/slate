@@ -158,7 +158,7 @@ export function NoteEditor({
             onChange={(e) =>
               setEditedNote({ ...editedNote, title: e.target.value })
             }
-            className="w-full text-2xl font-semibold tracking-tight mb-2 bg-transparent border-none focus:outline-none focus:ring-0 p-0"
+            className="w-full title-font text-4xl tracking-tight mb-2 bg-transparent border-none focus:outline-none focus:ring-0 p-0"
           />
 
           <textarea

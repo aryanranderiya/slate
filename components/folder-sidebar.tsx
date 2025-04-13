@@ -1,20 +1,6 @@
 "use client";
-import { X } from "lucide-react";
-import type { Folder } from "@/types";
 import { cn } from "@/lib/utils";
-import {
-  FolderIcon,
-  FileText,
-  Briefcase,
-  User,
-  Lightbulb,
-  FolderGit2,
-  GraduationCap,
-  DollarSign,
-  Plane,
-  Archive,
-} from "lucide-react";
-import { HugeiconsIcon } from "@hugeicons/react";
+import type { Folder } from "@/types";
 import {
   AiIdeaIcon,
   AirplaneTakeOff01Icon,
@@ -23,11 +9,12 @@ import {
   HealtcareIcon,
   MoneyBag02Icon,
   Mortarboard02Icon,
-  Notification03Icon,
   StickyNote01Icon,
   StickyNote02Icon,
-  WorkIcon,
+  WorkIcon
 } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { FolderIcon, Plus, X } from "lucide-react";
 
 interface FolderSidebarProps {
   folders: Folder[];
@@ -36,6 +23,7 @@ interface FolderSidebarProps {
   noteCount: Record<string, number>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  onAddNote?: () => void;
 }
 
 export const getIconForFolder = (
@@ -44,7 +32,7 @@ export const getIconForFolder = (
   color = undefined
 ) => {
   switch (folderName.toLowerCase()) {
-    case "all notes":
+    case "all":
       return (
         <HugeiconsIcon
           icon={StickyNote01Icon}
@@ -117,6 +105,7 @@ export function FolderSidebar({
   noteCount,
   isOpen,
   setIsOpen,
+  onAddNote,
 }: FolderSidebarProps) {
   const handleFolderClick = (folderId: string) => {
     setActiveFolder(folderId);
@@ -135,7 +124,7 @@ export function FolderSidebar({
 
       <aside
         className={cn(
-          "w-64 bg-white border-r border-zinc-200 h-screen flex flex-col transition-all duration-300 ease-in-out",
+          "min-w-64 w-fit bg-white border-r-2 border-zinc-200 h-screen flex flex-col transition-all duration-300 ease-in-out",
           "fixed md:static z-30 top-0 left-0",
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
@@ -143,11 +132,11 @@ export function FolderSidebar({
         <div className="p-4 border-b border-zinc-200 flex items-center justify-between">
           <div className="flex flex-col">
             <div className="flex items-center gap-1">
-              <HugeiconsIcon icon={StickyNote02Icon} height={22} />
-              <h1 className="text-xl font-semibold tracking-tighter">Slate</h1>
+              <HugeiconsIcon icon={StickyNote02Icon} height={30} width={30} />
+              <h1 className="text-4xl font-semibold title-font">Slate</h1>
             </div>
-            <div className="text-sm tracking-tight">
-              A colorful note-taking app.
+            <div className="text-sm tracking-tight text-nowrap">
+              Where colorful ideas find their home
             </div>
           </div>
           <button
@@ -159,6 +148,15 @@ export function FolderSidebar({
         </div>
 
         <div className="flex-1 overflow-auto p-3">
+          {onAddNote && (
+            <button
+              onClick={onAddNote}
+              className="w-full flex items-center justify-center gap-2 mb-4 px-3 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl text-sm font-medium transition-colors"
+            >
+              <Plus size={18} />
+              <span>New Note</span>
+            </button>
+          )}
           <div className="space-y-1">
             {folders.map((folder) => (
               <button
@@ -172,11 +170,11 @@ export function FolderSidebar({
                   } as React.CSSProperties
                 }
                 className={cn(
-                  "w-full flex items-center px-3 py-2 rounded-xl text-sm transition-all  gap-2 bg-zinc-50 hover:bg-[var(--hover-bg-color)]"
+                  "w-full flex items-center px-3 py-2 rounded-xl text-sm transition-all  gap-2 hover:bg-[var(--hover-bg-color)]"
                 )}
               >
                 <span>
-                  {getIconForFolder(folder.name, "w-4 h-4 text-black")}
+                  {getIconForFolder(folder.name, "w-5 h-5 text-black")}
                 </span>
                 <span className="truncate tracking-tight">{folder.name}</span>
                 <span
