@@ -132,15 +132,54 @@ export function NoteEditor({
             backgroundColor: lightenColor(currentFolder?.color, 80),
           }}
         />
-        <div className="flex items-center relative z-50 justify-between p-4 border-b border-zinc-200">
+        <div className="flex items-center relative z-50 justify-end p-4 ">
           <div className="flex items-center gap-2">
+            <button
+              onClick={handleDelete}
+              className="p-2 text-zinc-500 hover:text-red-500 rounded-lg hover:bg-zinc-100 transition-colors"
+            >
+              <Trash size={18} />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 text-zinc-500 hover:text-zinc-900 rounded-lg hover:bg-zinc-100 transition-colors"
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-auto px-4 relative z-50">
+          <input
+            ref={titleRef}
+            type="text"
+            placeholder="Title"
+            value={editedNote.title}
+            onChange={(e) =>
+              setEditedNote({ ...editedNote, title: e.target.value })
+            }
+            className="w-full text-2xl font-semibold tracking-tight mb-2 bg-transparent border-none focus:outline-none focus:ring-0 p-0"
+          />
+
+          <textarea
+            placeholder="Write your note here..."
+            value={editedNote.content}
+            onChange={(e) =>
+              setEditedNote({ ...editedNote, content: e.target.value })
+            }
+            className="w-full h-[calc(100%-4rem)] resize-none bg-transparent border-none focus:outline-none focus:ring-0 p-0 text-zinc-700 leading-relaxed"
+          />
+        </div>
+
+        <div className="p-4 relative z-50 flex gap-2 flex-col items-end">
+          <div className="flex items-center gap-2 justify-between w-full">
             <Select
               value={editedNote.folderId}
               onValueChange={(value) =>
                 setEditedNote({ ...editedNote, folderId: value })
               }
             >
-              <SelectTrigger className="w-[180px] rounded-xl border-none">
+              <SelectTrigger className="w-[180px] h-8 rounded-lg border-none">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent className="rounded-xl">
@@ -165,51 +204,10 @@ export function NoteEditor({
                 </Button>
               </SelectContent>
             </Select>
-
-            <div className="text-xs text-zinc-500">
+            <div className="text-sm text-zinc-500">
               {wordCount} {wordCount === 1 ? "word" : "words"}
             </div>
           </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleDelete}
-              className="p-2 text-zinc-500 hover:text-red-500 rounded-lg hover:bg-zinc-100 transition-colors"
-            >
-              <Trash size={18} />
-            </button>
-            <button
-              onClick={onClose}
-              className="p-2 text-zinc-500 hover:text-zinc-900 rounded-lg hover:bg-zinc-100 transition-colors"
-            >
-              <X size={18} />
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-auto p-4 relative z-50">
-          <input
-            ref={titleRef}
-            type="text"
-            placeholder="Title"
-            value={editedNote.title}
-            onChange={(e) =>
-              setEditedNote({ ...editedNote, title: e.target.value })
-            }
-            className="w-full text-xl font-semibold tracking-tight mb-2 bg-transparent border-none focus:outline-none focus:ring-0 p-0"
-          />
-
-          <textarea
-            placeholder="Write your note here..."
-            value={editedNote.content}
-            onChange={(e) =>
-              setEditedNote({ ...editedNote, content: e.target.value })
-            }
-            className="w-full h-[calc(100%-4rem)] resize-none bg-transparent border-none focus:outline-none focus:ring-0 p-0 text-zinc-700 leading-relaxed"
-          />
-        </div>
-
-        <div className="p-4 border-t border-zinc-200 relative z-50">
           <button
             onClick={handleSave}
             className="w-full py-2 px-4 bg-zinc-900 text-white rounded-xl hover:bg-zinc-800 transition-colors"
