@@ -4,6 +4,7 @@ import { Input } from "@heroui/input";
 import { Kbd } from "@heroui/kbd";
 import { Search } from "lucide-react";
 import { SearchFilters } from "./search-filters";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SearchBarProps {
   value: string;
@@ -31,6 +32,7 @@ export function SearchBar({
   onStarredChange = () => {},
 }: SearchBarProps) {
   const { folders } = useFolders();
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex flex-row gap-2 pt-2 w-full relative z-[1]">
@@ -43,7 +45,11 @@ export function SearchBar({
           size="lg"
           startContent={<Search size={20} className="text-zinc-400" />}
           placeholder="Search notes..."
-          endContent={<Kbd className="text-nowrap"> &nbsp; / to Focus</Kbd>}
+          endContent={
+            isMobile ? null : (
+              <Kbd className="text-nowrap"> &nbsp; / to Focus</Kbd>
+            )
+          }
           value={value}
           onValueChange={onChange}
           className="flex-1"

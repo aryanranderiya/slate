@@ -1,12 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { X, Trash, Plus } from "lucide-react";
-import type { Note, Folder } from "@/types";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import { lightenColor } from "@/lib/color-utils";
 import { NewCategoryDialog } from "@/components/new-category-dialog";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -14,9 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { lightenColor } from "@/lib/color-utils";
+import { cn } from "@/lib/utils";
+import type { Folder, Note } from "@/types";
+import { Plus, Trash, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 interface NoteEditorProps {
   note: Note | null;
@@ -85,7 +83,7 @@ export function NoteEditor({
       title: editedNote.title.trim(),
       updatedAt: new Date(),
     };
-    
+
     onSave(updatedNote);
     toast.success("Note saved successfully");
   };
@@ -238,7 +236,7 @@ export function NoteEditor({
         newCategory={newCategory}
         setNewCategory={setNewCategory}
         onAddFolder={onAddFolder}
-        onCategoryCreated={(folderId) => 
+        onCategoryCreated={(folderId) =>
           setEditedNote({ ...editedNote, folderId })
         }
       />
