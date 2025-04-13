@@ -72,38 +72,55 @@ export function FolderSidebar({
             </button>
           )}
           <div className="space-y-1">
-            {folders.map((folder) => (
-              <Link
+            {folders.map((folder, index) => (
+              <div
                 key={folder.id}
-                href={folder.id === "all" ? "/" : `/folder/${folder.id}`}
-                className="block"
+                className="flex items-center flex-col w-full justify-center"
               >
-                <button
-                  style={
-                    {
-                      backgroundColor:
-                        activeFolder === folder.id ? `${folder.color}20` : "",
-                      "--hover-bg-color": `${folder.color}15`,
-                    } as React.CSSProperties
-                  }
-                  className={cn(
-                    "w-full flex items-center px-3 py-2 rounded-xl text-sm transition-all gap-2 hover:bg-[var(--hover-bg-color)]"
-                  )}
-                  onClick={() => {
-                    setActiveFolder(folder.id);
-                    setIsOpen(false);
-                  }}
+                <Link
+                  href={folder.id === "all" ? "/" : `/folder/${folder.id}`}
+                  className="block w-full"
                 >
-                  <span>
-                    {folder.id === "starred" ? (
-                      <Star className="w-5 h-5 text-black" />
-                    ) : (
-                      getIconForFolder(folder.name, "w-5 h-5 text-black")
+                  <button
+                    style={
+                      {
+                        backgroundColor:
+                          activeFolder === folder.id ? `${folder.color}20` : "",
+                        "--hover-bg-color": `${folder.color}15`,
+                      } as React.CSSProperties
+                    }
+                    className={cn(
+                      "w-full flex items-center px-3 py-2 rounded-xl text-sm transition-all gap-2 hover:bg-[var(--hover-bg-color)]"
                     )}
-                  </span>
-                  <span className="truncate tracking-tight">{folder.name}</span>
-                </button>
-              </Link>
+                    onClick={() => {
+                      setActiveFolder(folder.id);
+                      setIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      {folder.id === "starred" ? (
+                        <Star className="w-5 h-5 text-black" />
+                      ) : (
+                        getIconForFolder(folder.name, "w-5 h-5 text-black")
+                      )}
+                    </span>
+                    <span className="truncate tracking-tight">
+                      {folder.name}
+                    </span>
+
+                    {folder.id === "all" || folder.id === "starred" ? null : (
+                      <div
+                        className="aspect-square ml-auto min-w-[12px] h-[12px] w-[12px] min-h-[12px] rounded-full"
+                        style={{ backgroundColor: `${folder.color}` }}
+                      />
+                    )}
+                  </button>
+                </Link>
+
+                {folder.id === "starred" && (
+                  <hr className="my-2 w-[95%] border-t border-zinc-200" />
+                )}
+              </div>
             ))}
           </div>
         </div>

@@ -13,7 +13,7 @@ import {
   WorkIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { FolderIcon } from "lucide-react";
+import { FolderIcon, Star } from "lucide-react";
 
 export const getIconForFolder = (
   folderName: string,
@@ -29,6 +29,8 @@ export const getIconForFolder = (
           color={color}
         />
       );
+    case "starred":
+      return <Star className={className} color={color} />;
     case "work":
       return (
         <HugeiconsIcon icon={WorkIcon} className={className} color={color} />
