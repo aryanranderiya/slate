@@ -70,10 +70,19 @@ export function useNotes(folders: Folder[]) {
     setNotes(notes.filter((note) => note.id !== id))
   }
 
+  const toggleStar = (id: string, starred: boolean) => {
+    setNotes(
+      notes.map((note) =>
+        note.id === id ? { ...note, starred } : note
+      )
+    )
+  }
+
   return {
     notes,
     addNote,
     updateNote,
     deleteNote,
+    toggleStar,
   }
 }
