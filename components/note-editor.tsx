@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import { X, Trash, Plus } from "lucide-react";
 import type { Note, Folder } from "@/types";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { lightenColor } from "@/lib/color-utils";
+import { NewCategoryDialog } from "@/components/new-category-dialog";
 import {
   Select,
   SelectContent,
@@ -12,14 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface NoteEditorProps {
   note: Note | null;
@@ -28,22 +25,6 @@ interface NoteEditorProps {
   onClose: () => void;
   onDelete: (id: string) => void;
   onAddFolder?: (folder: Folder) => void;
-}
-
-export function lightenColor(hex: string | undefined, percent: number) {
-  if (!hex) return "#ffffff";
-  hex = hex.replace("#", "");
-  const num = parseInt(hex, 16);
-
-  let r = (num >> 16) + Math.round(2.55 * percent);
-  let g = ((num >> 8) & 0x00ff) + Math.round(2.55 * percent);
-  let b = (num & 0x0000ff) + Math.round(2.55 * percent);
-
-  r = Math.min(255, r);
-  g = Math.min(255, g);
-  b = Math.min(255, b);
-
-  return `#${(0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 }
 
 export function NoteEditor({
@@ -72,6 +53,7 @@ export function NoteEditor({
     name: "",
     color: "#4f46e5",
   });
+  const [titleError, setTitleError] = useState(false);
 
   const currentFolder = folders.find((f) => f.id === editedNote.folderId);
   const bgColorWithOpacity = currentFolder
@@ -90,20 +72,40 @@ export function NoteEditor({
   }, []);
 
   const handleSave = () => {
+    // Validate title
+    if (!editedNote.title.trim()) {
+      setTitleError(true);
+      toast.error("Please add a title to your note");
+      titleRef.current?.focus();
+      return;
+    }
+
     const updatedNote = {
       ...editedNote,
+      title: editedNote.title.trim(),
       updatedAt: new Date(),
     };
+    
     onSave(updatedNote);
+    toast.success("Note saved successfully");
   };
 
   const handleDelete = () => {
-    if (
-      editedNote.id &&
-      confirm("Are you sure you want to delete this note?")
-    ) {
-      onDelete(editedNote.id);
-      onClose();
+    if (editedNote.id) {
+      toast.promise(
+        new Promise<void>((resolve) => {
+          if (confirm("Are you sure you want to delete this note?")) {
+            onDelete(editedNote.id);
+            onClose();
+          }
+          resolve();
+        }),
+        {
+          loading: "Deleting note...",
+          success: "Note deleted successfully",
+          error: "Failed to delete note",
+        }
+      );
     }
   };
 
@@ -118,11 +120,10 @@ export function NoteEditor({
 
       <div
         style={{
-          // backgroundColor: `${currentFolder?.color}20`,
           backdropFilter: "blur(10px)",
         }}
         className={cn(
-          "fixed right-0 top-0 h-full w-full  sm:w-[32rem] bg-white z-50 shadow-xl flex flex-col transition-transform duration-300 ease-in-out",
+          "fixed right-0 top-0 h-full w-full sm:w-[32rem] bg-white z-50 shadow-xl flex flex-col transition-transform duration-300 ease-in-out",
           isVisible ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -137,12 +138,14 @@ export function NoteEditor({
             <button
               onClick={handleDelete}
               className="p-2 text-zinc-500 hover:text-red-500 rounded-lg hover:bg-zinc-100 transition-colors"
+              aria-label="Delete note"
             >
               <Trash size={18} />
             </button>
             <button
               onClick={onClose}
               className="p-2 text-zinc-500 hover:text-zinc-900 rounded-lg hover:bg-zinc-100 transition-colors"
+              aria-label="Close editor"
             >
               <X size={18} />
             </button>
@@ -150,16 +153,28 @@ export function NoteEditor({
         </div>
 
         <div className="flex-1 overflow-auto px-4 relative z-50">
-          <input
-            ref={titleRef}
-            type="text"
-            placeholder="Title"
-            value={editedNote.title}
-            onChange={(e) =>
-              setEditedNote({ ...editedNote, title: e.target.value })
-            }
-            className="w-full title-font text-4xl tracking-tight mb-2 bg-transparent border-none focus:outline-none focus:ring-0 p-0"
-          />
+          <div className="relative">
+            <input
+              ref={titleRef}
+              type="text"
+              placeholder="Title"
+              value={editedNote.title}
+              onChange={(e) => {
+                setEditedNote({ ...editedNote, title: e.target.value });
+                if (e.target.value.trim()) setTitleError(false);
+              }}
+              className={cn(
+                "w-full title-font text-4xl tracking-tight mb-2 bg-transparent border-none focus:outline-none focus:ring-0 p-0",
+                titleError && "placeholder:text-red-400"
+              )}
+              aria-invalid={titleError}
+            />
+            {titleError && (
+              <div className="text-red-500 text-sm mb-2">
+                Please add a title to your note
+              </div>
+            )}
+          </div>
 
           <textarea
             placeholder="Write your note here..."
@@ -217,56 +232,16 @@ export function NoteEditor({
         </div>
       </div>
 
-      <Dialog open={isNewCategoryOpen} onOpenChange={setIsNewCategoryOpen}>
-        <DialogContent>
-          <DialogTitle>Create New Category</DialogTitle>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Input
-                placeholder="Category name"
-                value={newCategory.name}
-                onChange={(e) =>
-                  setNewCategory({ ...newCategory, name: e.target.value })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Input
-                type="color"
-                value={newCategory.color}
-                onChange={(e) =>
-                  setNewCategory({ ...newCategory, color: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsNewCategoryOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                if (newCategory.name) {
-                  const newFolder: Folder = {
-                    id: Date.now().toString(),
-                    name: newCategory.name,
-                    color: newCategory.color,
-                  };
-                  onAddFolder?.(newFolder);
-                  setEditedNote({ ...editedNote, folderId: newFolder.id });
-                  setNewCategory({ name: "", color: "#4f46e5" });
-                  setIsNewCategoryOpen(false);
-                }
-              }}
-            >
-              Create
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <NewCategoryDialog
+        open={isNewCategoryOpen}
+        onOpenChange={setIsNewCategoryOpen}
+        newCategory={newCategory}
+        setNewCategory={setNewCategory}
+        onAddFolder={onAddFolder}
+        onCategoryCreated={(folderId) => 
+          setEditedNote({ ...editedNote, folderId })
+        }
+      />
     </>
   );
 }
