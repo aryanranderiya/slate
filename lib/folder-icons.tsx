@@ -4,6 +4,7 @@ import {
   AiIdeaIcon,
   AirplaneTakeOff01Icon,
   Archive02Icon,
+  Folder01Icon,
   Folder02Icon,
   HealtcareIcon,
   MoneyBag02Icon,
@@ -85,6 +86,12 @@ export const getIconForFolder = (
         />
       );
     default:
-      return <FolderIcon className={className} color={color} />;
+      return (
+        <HugeiconsIcon
+          icon={Folder01Icon}
+          className={className}
+          color={color}
+        />
+      );
   }
 };

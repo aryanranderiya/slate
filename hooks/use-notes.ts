@@ -56,7 +56,28 @@ function generateDummyNotes(folders: Folder[]): Note[] {
 }
 
 export function useNotes(folders: Folder[]) {
-  const [notes, setNotes] = useState<Note[]>(() => generateDummyNotes(folders))
+  const [notes, setNotes] = useState<Note[]>(() => {
+    // Initialize notes
+    const initialNotes = generateDummyNotes(folders);
+
+    // Try to load starred status from localStorage
+    try {
+      const storedStarredNotes = localStorage.getItem('starredNotes');
+      if (storedStarredNotes) {
+        const starredIds = JSON.parse(storedStarredNotes) as string[];
+
+        // Apply stored starred status to the initial notes
+        return initialNotes.map(note => ({
+          ...note,
+          starred: starredIds.includes(note.id)
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to load starred notes from localStorage:', error);
+    }
+
+    return initialNotes;
+  })
 
   const addNote = (note: Note) => {
     setNotes([...notes, note])
@@ -71,11 +92,20 @@ export function useNotes(folders: Folder[]) {
   }
 
   const toggleStar = (id: string, starred: boolean) => {
-    setNotes(
-      notes.map((note) =>
-        note.id === id ? { ...note, starred } : note
-      )
-    )
+    const updatedNotes = notes.map((note) =>
+      note.id === id ? { ...note, starred } : note
+    );
+    setNotes(updatedNotes);
+
+    // Save starred note IDs to localStorage
+    try {
+      const starredIds = updatedNotes
+        .filter(note => note.starred)
+        .map(note => note.id);
+      localStorage.setItem('starredNotes', JSON.stringify(starredIds));
+    } catch (error) {
+      console.error('Failed to save starred notes to localStorage:', error);
+    }
   }
 
   return {

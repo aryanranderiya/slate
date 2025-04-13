@@ -12,9 +12,15 @@ import { useSearch } from "@/hooks/use-search";
 import type { Note } from "@/types";
 import { useEffect, useState } from "react";
 
-export default function NotesApp() {
-  const { folders, activeFolder, setActiveFolder, addFolder } = useFolders();
-  const { notes, addNote, updateNote, deleteNote } = useNotes(folders);
+export default function NotesApp({
+  initialFolderId,
+}: {
+  initialFolderId?: string;
+}) {
+  const { folders, activeFolder, setActiveFolder, addFolder } =
+    useFolders(initialFolderId);
+  const { notes, addNote, updateNote, deleteNote, toggleStar } =
+    useNotes(folders);
   const { searchQuery, setSearchQuery, filteredNotes } = useSearch(
     notes,
     activeFolder
@@ -77,19 +83,26 @@ export default function NotesApp() {
 
   return (
     <div className="flex h-screen bg-zinc-100 text-zinc-900 overflow-hidden">
+      {" "}
       <FolderSidebar
         folders={folders}
         activeFolder={activeFolder}
         setActiveFolder={setActiveFolder}
         noteCount={notes.reduce((acc, note) => {
+          // Count by folder
           acc[note.folderId] = (acc[note.folderId] || 0) + 1;
+
+          // Count starred notes separately
+          if (note.starred) {
+            acc["starred"] = (acc["starred"] || 0) + 1;
+          }
+
           return acc;
         }, {} as Record<string, number>)}
         isOpen={isMobileMenuOpen}
         setIsOpen={setIsMobileMenuOpen}
         onAddNote={handleCreateNote}
       />
-
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <header className="sticky top-0 z-10 sm:px-7 sm:pt-8 px-4 rounded-b-3xl py-3 border-b-2 pb-7 bg-white border-t-0 flex flex-col items-start justify-center overflow-hidden">
           {/*  min-h-[180px] */}
@@ -113,12 +126,12 @@ export default function NotesApp() {
             notes={filteredNotes}
             folders={folders}
             onNoteClick={handleEditNote}
+            onToggleStar={toggleStar}
           />
         </main>
 
         <CreateNoteButton onClick={handleCreateNote} />
       </div>
-
       {isEditorOpen && (
         <NoteEditor
           note={currentNote}

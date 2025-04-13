@@ -7,9 +7,15 @@ interface NotesGridProps {
   notes: Note[];
   folders: Folder[];
   onNoteClick: (note: Note) => void;
+  onToggleStar?: (noteId: string, starred: boolean) => void;
 }
 
-export function NotesGrid({ notes, folders, onNoteClick }: NotesGridProps) {
+export function NotesGrid({
+  notes,
+  folders,
+  onNoteClick,
+  onToggleStar,
+}: NotesGridProps) {
   if (notes.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-zinc-400">
@@ -27,6 +33,7 @@ export function NotesGrid({ notes, folders, onNoteClick }: NotesGridProps) {
           note={note}
           folders={folders}
           onClick={onNoteClick}
+          onToggleStar={onToggleStar}
         />
       ))}
     </div>

@@ -11,4 +11,5 @@ export interface Note {
   folderId: string
   createdAt: Date
   updatedAt: Date
+  starred?: boolean
 }

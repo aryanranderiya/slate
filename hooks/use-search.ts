@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import type { Note } from "@/types"
-import { ALL_NOTES_ID } from "./use-folders"
+import { ALL_NOTES_ID, STARRED_ID } from "./use-folders"
 
 export function useSearch(notes: Note[], activeFolder: string) {
   const [searchQuery, setSearchQuery] = useState("")
@@ -15,6 +15,11 @@ export function useSearch(notes: Note[], activeFolder: string) {
       return notes.filter(
         (note) => note.title.toLowerCase().includes(query) || note.content.toLowerCase().includes(query),
       )
+    }
+
+    // Special case for starred notes
+    if (activeFolder === STARRED_ID) {
+      return notes.filter((note) => note.starred)
     }
 
     if (activeFolder === ALL_NOTES_ID) return notes
