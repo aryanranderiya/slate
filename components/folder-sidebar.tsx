@@ -11,7 +11,6 @@ interface FolderSidebarProps {
   folders: Folder[];
   activeFolder: string;
   setActiveFolder: (id: string) => void;
-  noteCount: Record<string, number>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onAddNote?: () => void;
@@ -21,16 +20,10 @@ export function FolderSidebar({
   folders,
   activeFolder,
   setActiveFolder,
-  noteCount,
   isOpen,
   setIsOpen,
   onAddNote,
 }: FolderSidebarProps) {
-  const handleFolderClick = (folderId: string) => {
-    setActiveFolder(folderId);
-    setIsOpen(false);
-  };
-
   return (
     <>
       <div
@@ -109,12 +102,6 @@ export function FolderSidebar({
                     )}
                   </span>
                   <span className="truncate tracking-tight">{folder.name}</span>
-                  {noteCount[folder.id] > 0 && (
-                    <span
-                      className="aspect-square ml-auto min-w-[12px] min-h-[12px] rounded-full"
-                      style={{ backgroundColor: `${folder.color}90` }}
-                    />
-                  )}
                 </button>
               </Link>
             ))}

@@ -19,8 +19,7 @@ export default function NotesApp({
 }) {
   const { folders, activeFolder, setActiveFolder, addFolder } =
     useFolders(initialFolderId);
-  const { notes, addNote, updateNote, deleteNote, toggleStar } =
-    useNotes(folders);
+  const { notes, addNote, updateNote, deleteNote, toggleStar } = useNotes();
   const { searchQuery, setSearchQuery, filteredNotes } = useSearch(
     notes,
     activeFolder
@@ -83,22 +82,10 @@ export default function NotesApp({
 
   return (
     <div className="flex h-screen bg-zinc-100 text-zinc-900 overflow-hidden">
-      {" "}
       <FolderSidebar
         folders={folders}
         activeFolder={activeFolder}
         setActiveFolder={setActiveFolder}
-        noteCount={notes.reduce((acc, note) => {
-          // Count by folder
-          acc[note.folderId] = (acc[note.folderId] || 0) + 1;
-
-          // Count starred notes separately
-          if (note.starred) {
-            acc["starred"] = (acc["starred"] || 0) + 1;
-          }
-
-          return acc;
-        }, {} as Record<string, number>)}
         isOpen={isMobileMenuOpen}
         setIsOpen={setIsMobileMenuOpen}
         onAddNote={handleCreateNote}

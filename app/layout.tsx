@@ -2,6 +2,7 @@ import { HeroUIProvider } from "@heroui/react";
 import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const serifFont = Instrument_Serif({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${serifFont.variable} ${sansFont.variable}`}>
       <body>
+        <Toaster richColors position="top-right" />
         <HeroUIProvider>{children}</HeroUIProvider>
       </body>
     </html>
