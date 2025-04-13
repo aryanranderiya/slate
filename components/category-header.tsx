@@ -1,20 +1,8 @@
 "use client";
 
-import type { Folder } from "@/types";
-import {
-  FolderIcon,
-  FileText,
-  Briefcase,
-  User,
-  Lightbulb,
-  FolderGit2,
-  GraduationCap,
-  DollarSign,
-  Plane,
-  Archive,
-  Menu,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Folder } from "@/types";
+import { Menu } from "lucide-react";
 import { getIconForFolder } from "./folder-sidebar";
 
 interface CategoryHeaderProps {

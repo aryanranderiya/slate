@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@heroui/input";
-import { Search, Menu } from "lucide-react";
 import { Kbd } from "@heroui/kbd";
+import { Search } from "lucide-react";
 
 interface SearchBarProps {
   value: string;

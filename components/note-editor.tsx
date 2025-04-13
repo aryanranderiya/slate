@@ -30,7 +30,8 @@ interface NoteEditorProps {
   onAddFolder?: (folder: Folder) => void;
 }
 
-export function lightenColor(hex: string, percent: number) {
+export function lightenColor(hex: string | undefined, percent: number) {
+  if (!hex) return "#ffffff";
   hex = hex.replace("#", "");
   const num = parseInt(hex, 16);
 
@@ -51,6 +52,7 @@ export function NoteEditor({
   onSave,
   onClose,
   onDelete,
+  onAddFolder,
 }: NoteEditorProps) {
   const [editedNote, setEditedNote] = useState<Note>(
     note || {
@@ -127,9 +129,9 @@ export function NoteEditor({
         <div
           className="inset-0 h-full absolute w-full z-[49]"
           style={{
-            backgroundColor: `${lightenColor(currentFolder?.color, 80)}`,
+            backgroundColor: lightenColor(currentFolder?.color, 80),
           }}
-        ></div>
+        />
         <div className="flex items-center relative z-50 justify-between p-4 border-b border-zinc-200">
           <div className="flex items-center gap-2">
             <Select
