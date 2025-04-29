@@ -1,6 +1,6 @@
 # Slate
 
-A sleek, minimalist note-taking application with folder organization and rich text editing capabilities.
+A sleek, minimalist, color-coded note-taking application
 
 
 ## Features
@@ -10,6 +10,12 @@ A sleek, minimalist note-taking application with folder organization and rich te
 - **Search Functionality**: Quickly find notes with powerful search capabilities
 - **Star Important Notes**: Mark your favorite notes for quick access
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+## Screenshots
+![Screenshot from 2025-04-30 03-06-05](https://github.com/user-attachments/assets/e72b3f18-e20d-4a3d-9499-ee3ae23ea8f5)
+![Screenshot from 2025-04-30 03-06-12](https://github.com/user-attachments/assets/e695d465-a485-416a-8f2a-ff45e20eeb54)
+![Screenshot from 2025-04-30 03-06-31](https://github.com/user-attachments/assets/ca54de9e-25f5-4b26-a262-cce8e8f5c701)
+
 
 ## Tech Stack
 
